@@ -1,0 +1,357 @@
+class Node:
+    
+    ###########################################################################################
+    # Class initiation - define class attributes:
+    #  - Name      = Node Name
+    #  - Neighbors = Dictionary of neighbors were names are the keys and weight is it's value
+    ###########################################################################################
+    
+    def __init__(self,Name):
+        self.Name = Name
+        self.Neighbors = {}
+
+
+    ###########################################################################################
+    # Class Description - Class description function that will display for each node
+    # it's neighbors & their weight
+    ###########################################################################################
+        
+    def __str__(self):
+        return "Node No {:2} has the following Neighbors (neighbor,weight) : {} ".format(str(self.Name),
+                str([(Neighbor,self.Neighbors[Neighbor]) for Neighbor in self.Neighbors]
+                   ))
+
+    ###################################################################################################
+    # Class length - Class length function that will display how many neighbors a given node has
+    ###################################################################################################
+    
+    def __len__(self):
+        return len(self.Neighbors)
+    
+    ###########################################################################################
+    # Class function that will check weather an item is a neighbor of a given node
+    ###########################################################################################
+
+    def __contains__(self,Item):
+        return Item in self.Neighbors
+    
+    ##############################################################################################
+    # Class function that will return the weight of a neighbor named Key (function param)
+    ##############################################################################################
+
+    def __getitem__(self,Key):
+        return self.Neighbors[Key] if Key in self.Neighbors else None
+    
+    ##############################################################################################
+    # Class function that will return True if a Node is the same as base Node
+    ##############################################################################################
+    
+    def __eq__(self,other):
+        return self.Name == other.Name
+    
+    ##############################################################################################
+    # Class function that will return True if a Node is not the same as base Node
+    ##############################################################################################
+
+    def __ne__(self,other):
+        return self.Name != other.Name        
+    
+    ###########################################################################################
+    # Class function that will check weather an item is a neighbor of a given node
+    ###########################################################################################
+
+    def Is_Neighbor (self,name):
+        return self.__contains__(name)
+
+    
+    ###############################################################################################
+    # Main Function
+    # Class function that will maintain Node's Neighbors with the following functionality:
+    # - for Non-Neighbor Node - can be added as a new neighbor
+    # - for existing Neighbor - update the Neighbor's Value to taken the maximum value between
+    #   current value and new value 
+    # - for given neighbor node that has the same name as self - do not allow it 
+    #   Method should not fail
+    ###############################################################################################
+        
+    def Update(self,Name,Weight):
+        if Name == self.Name:
+            print ("Node Name already exists - cannot be added")
+            return False
+        elif self.Is_Neighbor(Name) == True:
+            self.Neighbors[Name] = max(Weight,self.Neighbors[Name])
+            return True
+        else: 
+            self.Neighbors[Name] = Weight
+            return True
+
+    ###########################################################################################
+    # Class function that will enable removing of a neighbor of a given node
+    #    Class shouldn't fail
+    ###########################################################################################
+
+    def Remove_Neighbor(self,Name):
+        return self.Neighbors.pop(Name, None)
+        
+    ###########################################################################################
+    # Class function that will return True in case a Node has no neighbors
+    ###########################################################################################
+
+    def Is_Isolated(self):
+        return len(self) == 0
+        
+        Task 2a - Create Node object according to the given figure & print it textually
+In [23]:
+
+
+Node_No_1 = Node(1)
+Node_No_1.Update(5, 20)
+Node_No_1.Update(4, 20)
+Node_No_1.Update(6, 5)
+Node_No_1.Update(2, 10)
+Node_No_1.Update(7, 15)
+print(Node_No_1)
+Node_No_2 = Node(2)
+Node_No_2.Update(4, 10)
+Node_No_2.Update(3, 5)
+print(Node_No_2)
+Node_No_3 = Node(3)
+Node_No_3.Update(4, 5)
+Node_No_3.Update(2, 15)
+print(Node_No_3)
+Node_No_4 = Node(4)
+Node_No_4.Update(5, 10)
+print(Node_No_4)
+Node_No_5 = Node(5)
+Node_No_5.Update(6, 5)
+print(Node_No_5)
+Node_No_6 = Node(6)
+print(Node_No_6)
+Node_No_7 = Node(7)
+Node_No_7.Update(6, 10)
+print(Node_No_7)
+Node_No_8 = Node(8)
+Node_No_8.Update(1, 5)
+Node_No_8.Update(7, 5)
+Node_No_8.Update(2, 20)
+print(Node_No_8)
+Node_No_9 = Node(9)
+Node_No_9.Update(10, 10)
+Node_No_9.Update(8, 20)
+Node_No_9.Update(2, 15)
+print(Node_No_9)
+Node_No_10 = Node(10)
+Node_No_10.Update(2, 5)
+Node_No_10.Update(3, 15)
+print(Node_No_10)
+
+
+
+Node No 1  has the following Neighbors (neighbor,weight) : [(5, 20), (4, 20), (6, 5), (2, 10), (7, 15)] 
+Node No 2  has the following Neighbors (neighbor,weight) : [(4, 10), (3, 5)] 
+Node No 3  has the following Neighbors (neighbor,weight) : [(4, 5), (2, 15)] 
+Node No 4  has the following Neighbors (neighbor,weight) : [(5, 10)] 
+Node No 5  has the following Neighbors (neighbor,weight) : [(6, 5)] 
+Node No 6  has the following Neighbors (neighbor,weight) : [] 
+Node No 7  has the following Neighbors (neighbor,weight) : [(6, 10)] 
+Node No 8  has the following Neighbors (neighbor,weight) : [(1, 5), (7, 5), (2, 20)] 
+Node No 9  has the following Neighbors (neighbor,weight) : [(10, 10), (8, 20), (2, 15)] 
+Node No 10 has the following Neighbors (neighbor,weight) : [(2, 5), (3, 15)] 
+
+Task 2b - Node's Test Validation
+In [24]:
+
+
+
+print('Node Descripion test:',Node_No_1)
+print ("Node Length test: Node No {} has {} Neighbors".format(Node_No_1.Name,len(Node_No_1)))
+print ("Node Length test: Node No {} has {} Neighbors".format(Node_No_6.Name,len(Node_No_6)))
+print ("Node contains test: Node No {} {} contains Node {}as a Neighbor".format(Node_No_2.Name,'do not' if 4 not in Node_No_2 else '', Node_No_4.Name))
+print ("Node contains test: Node No {} {} contains Node {} as a Neighbor".format(Node_No_2.Name,'do not' if 6 not in Node_No_2 else '', Node_No_6.Name))
+print("Node fetch item test: Fetch(Node_{}[{}]) = {}".format(Node_No_3.Name,4,Node_No_3.__getitem__(4)))
+print("Node fetch item test: Fetch(Node_{}[{}]) = {}".format(Node_No_3.Name,6,Node_No_3.__getitem__(6)))
+print("Node equals to Other node test: Node_{} {} Node_{}".format(Node_No_3.Name,'<>' if Node_No_3.Name != Node_No_6.Name else '=',Node_No_6.Name))
+​
+Node_3_dup=Node(3)
+print("Node equals to Other node test: Node_{} {} Node_{}".format(Node_No_3.Name,'<>' if Node_No_3.Name != Node_3_dup.Name else '=',Node_3_dup.Name))
+​
+print("Node is Neighbor to Other node test: Node_{} is {} Neighbor to Node_{}".format(Node_No_3.Name,'' if Node_No_3.Is_Neighbor(2) else 'not',Node_No_2.Name))
+print("Node is Neighbor to Other node test: Node_{} is {} Neighbor to Node_{}".format(Node_No_2.Name,'' if Node_No_2.Is_Neighbor(5) else 'not',Node_No_5.Name))
+​
+
+
+
+Node Descripion test: Node No 1  has the following Neighbors (neighbor,weight) : [(5, 20), (4, 20), (6, 5), (2, 10), (7, 15)] 
+Node Length test: Node No 1 has 5 Neighbors
+Node Length test: Node No 6 has 0 Neighbors
+Node contains test: Node No 2  contains Node 4as a Neighbor
+Node contains test: Node No 2 do not contains Node 6 as a Neighbor
+Node fetch item test: Fetch(Node_3[4]) = 5
+Node fetch item test: Fetch(Node_3[6]) = None
+Node equals to Other node test: Node_3 <> Node_6
+Node equals to Other node test: Node_3 = Node_3
+Node is Neighbor to Other node test: Node_3 is  Neighbor to Node_2
+Node is Neighbor to Other node test: Node_2 is not Neighbor to Node_5
+
+Task 2c - Find number of edges & Total of Node's weights
+In [30]:
+
+
+
+All_Nodes = [Node_No_1,Node_No_2,Node_No_3,Node_No_4,Node_No_5,Node_No_6,Node_No_7,Node_No_8,Node_No_9,Node_No_10]
+Nodes_Cnt = 0
+Total_Weight = 0
+Node_Name = []
+Node_Len = []
+for Node in All_Nodes:
+    Nodes_Cnt += len(Node)
+    Node_Name.append(Node.Name)
+    Node_Len.append(len(Node))
+    for i in range(len(Node)):
+        Neighbor = list(Node.Neighbors.keys())[i]
+        Total_Weight += Node.__getitem__(Neighbor)
+print('Total Edges  for all Nodes is:',Nodes_Cnt)
+print('Total Weight for all Nodes is:',Total_Weight)
+
+
+
+Total Edges  for all Nodes is: 20
+Total Weight for all Nodes is: 225
+
+Task 2d - Sort the nodes by the number of their neighbors
+In [51]:
+
+
+Node_Name_Len_List = list(zip(Node_Name,Node_Len))
+print(list(map(lambda Node: Node[0], sorted(list(Node_Name_Len_List), key=lambda Node: Node[1]))))
+
+
+
+
+[6, 4, 5, 7, 2, 3, 10, 8, 9, 1]
+
+Task 2 - Graph Class Definition
+In [60]:
+
+
+
+class Graph:
+    
+    ###########################################################################################
+    # Class initiation - define Graph class attributes:
+    #  - Name      = Graph Name
+    #  - Nodes     = Dictionary of graphs were names of the nodes are the keys 
+    #                and Node's instances are it's values
+    ###########################################################################################
+    
+    def __init__(self,Name,Nodes=None):
+        self.Name = Name
+        
+        # if there is a list of nodes given - fill in the Nodes Dictionary
+        if Nodes is not None:
+            self.Nodes = dict(map(lambda Node: (Node.Name, Node), Nodes))
+            
+   ############################################################################################
+    # Class Description - Class Graph description function that will display the description of 
+    # all Nodes in Graph
+    ###########################################################################################
+        
+    def __str__(self):
+        return "Graph {} has the following Nodes : {} ".format(str(self.Name),
+                str([(self.Nodes[Node_No]) for Node_No in self.Nodes]
+                   ))
+        
+    ############################################################################################
+    # Class length - Class length function that returns the number of nodes for a given graph
+    ############################################################################################
+    
+    def __len__(self):
+        return len(self.Nodes)
+
+    ###########################################################################################
+    # Class function that will return True in the following cases:
+    # a. Key is a string and a Node called Key     is in self
+    # b. Key is a Node   and a Node with same name is in self
+    ###########################################################################################
+
+    def __contains__(self,Key):
+​
+        if isinstance(Key, string):
+            return Key in self.Nodes
+        elif isinstance(Key, Node):
+            return Key in self.Nodes.values()
+
+    ###########################################################################################
+    # Class function that will return the Node object whose name is Name
+    ###########################################################################################
+
+    def __getitem__(self,Name):
+        try:
+            return self.Nones[Name] 
+        except KeyError: 
+            print (Name, 'is not a Node in Graph:',Graph.Name)
+
+    ###########################################################################################
+    # Class function that will add a Node to Graph object
+    ###########################################################################################
+
+    def Add_Node(self,New_Node):
+
+        if New_Node.Name not in self:
+            self.Nodes[New_Node.Name] = New_Node
+        else:
+            for neighbor_name in node.neighbors:
+                self[node.name].add_neighbor(neighbor_name, node[neighbor_name])
+
+        # If node has neighbors that are not already in self, then this method should create the relevant nodes
+        for neighbor in node.neighbors:
+            if neighbor not in self:
+                self.nodes[neighbor] = Node(neighbor)
+
+
+    ###########################################################################################
+    # Class function that will add a new Graph object that includes all the Nodes & Edges of
+    # self & other
+    ###########################################################################################
+
+        def __add__(self,other):
+            
+
+ 
+
+
+
+In [89]:
+
+
+Node fetch item test: Fetch(Node_3[6]) = None
+In [90]:
+
+
+Node equals to Other node test: Node_3 <> Node_6
+In [91]:
+
+
+Node equals to Other node test: Node_3 = Node_3
+In [92]:
+
+Node is Neighbor to Other node test: Node_3 is  Neighbor to Node_2
+In [93]:
+
+
+Node is Neighbor to Other node test: Node_2 is not Neighbor to Node_5
+In [94]:
+
+
+Out[94]:
+False
+In [132]:
+
+
+Total Edges for all Nodes is: 20
+Total Weight for all Nodes is: 225
+In [104]:
+
+
+Out[104]:
+<__main__.Node at 0x20dd0791c50>
